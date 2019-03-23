@@ -35,11 +35,11 @@ static void    mon_task(void *parm)
         // is not added to our timing.
         
         float new_cnt =  (float)idle_cnt;    // Save the count for printing it ...
-        idle_cnt = 0;                        // Reset variable
         
         // Compensate for the 100 ms delay artifact: 900 ms = 100%
         float cpu_percent = ((99.9 / 90.) * new_cnt) / 10;
         printf("%.0f%%  ", 100 - cpu_percent); fflush(stdout);
+        idle_cnt = 0;                        // Reset variable
         vTaskDelay(1000 / portTICK_RATE_MS);
         }
 }
@@ -84,6 +84,7 @@ void app_main()
         vTaskDelay(1000 / portTICK_RATE_MS);
         }
 }
+
 
 
 
