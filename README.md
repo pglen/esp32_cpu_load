@@ -8,18 +8,20 @@ FreeRTOS task stat subsystem.
 
   The result is extracted to this project.
   
-  
  Theory:
  
-   We create a low priority (igle) task, and a higher priority 
- (monitor) task.
+   We create a low priority (idle) task, and a higher priority (monitor) task.
  
   The low priority task delays 0 ms. We know, the task surrenders its control
-of the CPU, will not get it back until the next time slice. (10 msec) But ...
-the time value of zero, the scheduler tries to give it as soon as slice is 
-available. That is how we know the processor is doing 'stuff'.
+of the CPU, will not get it back until the next time slice. (10 msec) 
 
- The core of the measuring technique is in three lines:
+     But ...
+     
+   If the delay time value is zero, the scheduler tries to give the processor back as 
+soon as a time slice is available. Not getting the control back is how we know the processor
+ is doing other 'stuff'.
+
+ The core of the measuring technique is in the following three lines:
  
         int64_t now = esp_timer_get_time();     // Time anchor
         vTaskDelay(0 / portTICK_RATE_MS);
@@ -39,8 +41,9 @@ CPU Load Demo.
 -0%  -0%  -0%   work [[ 95%   ]] rest 74%  -0%  -0%  -0%  -0%  -0%  -0%  -0%  -0%  
 -0%   work [[ 27%  100%   ]] rest 42%  -0% 
 
- Note how nicely the sliding time overlap shows.
+ Note how nicely the sliding time window overlap shows.
  
  Peter Glen
  
  Free to copy.
+
